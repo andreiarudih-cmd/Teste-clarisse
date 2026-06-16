@@ -261,12 +261,17 @@
 
     async function loadData() {
       try {
-        const response = await fetch(GOOGLE_SCRIPT_URL + "?action=list");
+        // Adiciona um timestamp para evitar cache do navegador
+        const timestamp = new Date().getTime();
+        const response = await fetch(`${GOOGLE_SCRIPT_URL}?action=list&_=${timestamp}`);
         const data = await response.json();
+        
+        console.log("Dados recebidos:", data); // Log para depuração
+        
         allRows = Array.isArray(data.rows) ? data.rows : [];
         renderTable();
       } catch (e) {
-        console.error(e);
+        console.error("Erro ao carregar dados:", e);
       }
     }
 
